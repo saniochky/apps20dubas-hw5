@@ -95,7 +95,8 @@ public class AsIntStream implements IntStream {
 
     @Override
     public IntStream filter(IntPredicate predicate) {
-        return new AsIntStream(new StreamFilterIterator(integerStream, predicate));
+        return new AsIntStream(new
+                StreamFilterIterator(integerStream, predicate));
     }
 
     @Override

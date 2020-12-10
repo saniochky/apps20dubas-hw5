@@ -25,12 +25,8 @@ public class StreamIterator implements Iterator<Integer> {
 
     @Override
     public Integer next() {
-        if (hasNext()) {
-            int now = index;
-            index += 1;
-            return values[now];
-        }
-
-        throw new NoSuchElementException();
+        int now = index;
+        index += 1;
+        return values[now];
     }
 }
