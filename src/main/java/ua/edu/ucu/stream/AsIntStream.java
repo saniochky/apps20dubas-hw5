@@ -1,6 +1,5 @@
 package ua.edu.ucu.stream;
 
-import com.sun.javafx.fxml.expression.LiteralExpression;
 import ua.edu.ucu.function.*;
 import ua.edu.ucu.iterators.StreamFilterIterator;
 import ua.edu.ucu.iterators.StreamFlatMapIterator;
@@ -10,9 +9,10 @@ import ua.edu.ucu.iterators.StreamMapIterator;
 import java.util.Iterator;
 
 public class AsIntStream implements IntStream {
-    private static Iterator<Integer> integerStream;
+    private final Iterator<Integer> integerStream;
 
     private AsIntStream(Iterator<Integer> iterator) {
+        this.integerStream = iterator;
     }
 
     public static IntStream of(int... values) {
@@ -108,25 +108,22 @@ public class AsIntStream implements IntStream {
     }
 
     @Override
-    public IntStream map(IntUnaryOperator unaryOperator) {
-        return new AsIntStream(new StreamMapIterator(integerStream, unaryOperator));
+    public IntStream map(IntUnaryOperator mapper) {
+        return new AsIntStream(new StreamMapIterator(integerStream, mapper));
     }
 
     @Override
-    public IntStream flatMap(IntToIntStreamFunction function) {
-        return new AsIntStream(new StreamFlatMapIterator(integerStream, function));
+    public IntStream flatMap(IntToIntStreamFunction func) {
+        return new AsIntStream(new StreamFlatMapIterator(integerStream, func));
     }
 
     @Override
     public int reduce(int identity, IntBinaryOperator op) {
-        Iterable<Integer> iterable = () -> integerStream;
-        int applied = identity;
-
-        for (Integer integer: iterable) {
-            applied = op.apply(applied, integer);
+        while (integerStream.hasNext()) {
+            identity = op.apply(identity, integerStream.next());
         }
 
-        return applied;
+        return identity;
     }
 
     @Override
@@ -142,4 +139,7 @@ public class AsIntStream implements IntStream {
         return intArray;
     }
 
+    public Iterator<Integer> getIntegerStream() {
+        return integerStream;
+    }
 }

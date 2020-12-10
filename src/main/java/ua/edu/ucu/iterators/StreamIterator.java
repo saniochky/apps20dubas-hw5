@@ -1,24 +1,15 @@
 package ua.edu.ucu.iterators;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class StreamIterator implements Iterator<Integer> {
-    private Integer[] values;
+    private final int[] values;
     private int index;
 
-    public StreamIterator(Integer[] values) {
-        this.values = values;
-        this.index = 0;
-    }
-
     public StreamIterator(int[] values) {
-        this.values = new Integer[values.length];
-
-        for (int i = 0; i < values.length; i++) {
-            this.values[i] = values[i];
-        }
-
+        this.values = Arrays.copyOf(values, values.length);
         this.index = 0;
     }
 
@@ -35,8 +26,9 @@ public class StreamIterator implements Iterator<Integer> {
     @Override
     public Integer next() {
         if (hasNext()) {
+            int now = index;
             index += 1;
-            return values[index - 1];
+            return values[now];
         }
 
         throw new NoSuchElementException();

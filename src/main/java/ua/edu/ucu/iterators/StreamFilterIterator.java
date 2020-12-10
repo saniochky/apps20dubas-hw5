@@ -3,32 +3,32 @@ package ua.edu.ucu.iterators;
 import ua.edu.ucu.function.IntPredicate;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class StreamFilterIterator implements Iterator<Integer> {
-    private Iterator<Integer> iterator;
-    private IntPredicate predicate;
-    private Integer curInteger;
+    private final IntPredicate intPredicate;
+    private final Iterator<Integer> iterator;
+    private int current;
 
-    public StreamFilterIterator(Iterator<Integer> iterator, IntPredicate predicate) {
+    public StreamFilterIterator(Iterator<Integer> iterator,
+                          IntPredicate intPredicate) {
         this.iterator = iterator;
-        this.predicate = predicate;
+        this.intPredicate = intPredicate;
     }
 
     @Override
     public boolean hasNext() {
         while (iterator.hasNext()) {
-            curInteger = iterator.next();
-
-            if (predicate.test(curInteger)) {
+            current = iterator.next();
+            if (intPredicate.test(current)) {
                 return true;
             }
         }
-
         return false;
     }
 
     @Override
-    public Integer next() {
-        return curInteger;
+    public Integer next() throws NoSuchElementException {
+        return current;
     }
 }

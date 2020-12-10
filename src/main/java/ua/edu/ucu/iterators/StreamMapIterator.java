@@ -5,8 +5,8 @@ import ua.edu.ucu.function.IntUnaryOperator;
 import java.util.Iterator;
 
 public class StreamMapIterator implements Iterator<Integer> {
-    private Iterator<Integer> iterator;
-    private IntUnaryOperator unaryOperator;
+    private final Iterator<Integer> iterator;
+    private final IntUnaryOperator unaryOperator;
 
     public StreamMapIterator(Iterator<Integer> iterator, IntUnaryOperator unaryOperator) {
         this.iterator = iterator;
@@ -20,6 +20,7 @@ public class StreamMapIterator implements Iterator<Integer> {
 
     @Override
     public Integer next() {
-        return unaryOperator.apply(iterator.next());
+        int next = iterator.next();
+        return unaryOperator.apply(next);
     }
 }
